@@ -59,12 +59,25 @@ export default function Dashboard (){
         mx="auto"
         px="6">
           <Sidebar/>
-          <SimpleGrid flex="1" gap="4" minChildWidth="320px" align='flex-start'>
-            <Box bg="gray.800" p="8" borderRadius={8} boxShadow="md" rounded="md" pb="4" _hover={{boxShadow:'sm'}}>
+          <SimpleGrid flex="1" gap="4" minChildWidth="360px" align='flex-start'>
+            <Box
+              bg="gray.800"
+              p={["6","8"]}
+              borderRadius={8}
+              boxShadow="md"
+              rounded="md"
+              pb="4"
+              _hover={{boxShadow:'sm'}}>
               <Text fontSize="lg" mb="4">Inscritos da semana</Text>
               <Chart options={options} series={series} type="area" height={160}  />
             </Box>
-            <Box bg="gray.800"p="8" borderRadius="8" boxShadow="md" rounded="md" _hover={{boxShadow:'sm'}}>
+            <Box
+              bg="gray.800"
+              p={["6","8"]}
+              borderRadius="8"
+              boxShadow="md"
+              rounded="md"
+              _hover={{boxShadow:'sm'}}>
               <Text fontSize="lg" mb="4">Inscritos da semana</Text>
             </Box>
           

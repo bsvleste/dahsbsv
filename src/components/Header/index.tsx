@@ -20,7 +20,6 @@ export function Header (){
       mx="auto"      
       px="6"
       align="center"
-      boxShadow="md" p="6" rounded="md"
       >
         {!isWideVersion && (
         <IconButton 
