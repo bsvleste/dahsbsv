@@ -4,7 +4,6 @@ import {useForm, SubmitHandler} from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 
-
 type SignInFormData={
   email:string,
   password:string
@@ -12,14 +11,14 @@ type SignInFormData={
 
 const signInFormSchema = yup.object().shape({
   email:yup.string().required("E-mail obrigatorio").email('E-mail invalido'),
-  password:yup.string().required("Senha obrigatoria"),
+  password:yup.string().required("Senha obrigatoria").min(6,"A senha deve conter no minimo 6 caracteres"),
 })
 
 export default function SignIn() {
   const {register,handleSubmit,formState:{errors,isSubmitting }}= useForm<SignInFormData>({
     resolver:yupResolver(signInFormSchema)
   })
-console.log(errors)
+
   const handleSingIn:SubmitHandler<SignInFormData>= async (values)=>{
     await new Promise(resolve=>setTimeout(resolve,2000))
     console.log(values)
