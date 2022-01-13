@@ -6,16 +6,20 @@ import Link from 'next/link'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { useForm,SubmitHandler } from 'react-hook-form';
+import {useMutation} from 'react-query';
+import { api } from '../../services/api';
+import { queryClient } from '../../services/queryClient';
+import { useRouter } from 'next/router';
 
 type CreateUserFormData={
-  nome:string,
+  name:string,
   email:string,
   password:string
   password_confirm:string
 }
 
 const createUserFormSchema = yup.object().shape({
-  nome:yup.string().required("Nome é obrigatorio"),
+  name:yup.string().required("Nome é obrigatorio"),
   email:yup.string().required("E-mail obrigatorio").email('E-mail invalido'),
   password:yup.string().required("Senha obrigatoria").min(6,'Senha Deve conter no minimo 6 caracteres'),
   password_confirm:yup.string().oneOf([
@@ -24,13 +28,28 @@ const createUserFormSchema = yup.object().shape({
 })
 
 export default function CreateUser (){
+  const router = useRouter();
+  const createUser = useMutation(async(user:CreateUserFormData)=>{
+    const res = await api.post('users',{
+      user:{
+        ...user,
+        create_at:new Date(),
+      }
+    })
+    return res.data.user
+  },{
+    onSuccess:()=>{
+      queryClient.invalidateQueries('users');
+    }
+  });
+
   const {register,handleSubmit,formState:{errors,isSubmitting}} =useForm({
     resolver:yupResolver(createUserFormSchema)
   })
 
   const handleCreateUser:SubmitHandler<CreateUserFormData> = async(values)=>{
-    await new Promise(resolve=>setTimeout(resolve,2000))
-    console.log(values)
+    await createUser.mutateAsync(values);
+    router.push('/users')
   }
 
   return (
@@ -56,11 +75,11 @@ export default function CreateUser (){
            <VStack spacing="8" >
               <SimpleGrid minChildWidth="300px" spacing="8" w="100%">
                 <Input
-                  name="nome"
+                  name="name"
                   type='text'
                   label="Nome"
-                  error={errors.nome}         
-                  {...register("nome")}
+                  error={errors.name}         
+                  {...register("name")}
                   />
                 <Input
                   name="email"
