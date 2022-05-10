@@ -39,7 +39,6 @@ export function Pagination ({
       >
       <Box>
         {
-          
           <>
             <strong>0</strong> - <strong>{registerPerPage}</strong> de <strong>{totalCountOfRegister}</strong>
           </>
